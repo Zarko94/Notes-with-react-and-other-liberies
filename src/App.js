@@ -1,31 +1,21 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Sidebar from "./components/Sidebar";
 import Editor from "./components/Editor";
 import { data } from "./data";
 import Split from "react-split";
 import { nanoid } from "nanoid";
 import css from "./App.css";
-export default function App() {
-  /**
-   * Challenge:
-   * 1. Every time the `notes` array changes, save it
-   *    in localStorage. You'll need to use JSON.stringify()
-   *    to turn the array into a string to save in localStorage.
-   * 2. When the app first loads, initialize the notes state
-   *    with the notes saved in localStorage. You'll need to
-   *    use JSON.parse() to turn the stringified array back
-   *    into a real JS array.
-   */
 
+export default function App() {
   const [notes, setNotes] = React.useState(
-    JSON.parse(window.localStorage.getItem("notes")) || []
+    () => JSON.parse(localStorage.getItem("notes")) || []
   );
   const [currentNoteId, setCurrentNoteId] = React.useState(
-    () => (notes[0] && notes[0].id) || ""
+    (notes[0] && notes[0].id) || ""
   );
-  useEffect(() => {
+
+  React.useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
-    console.log(notes[0].body.split("\n"));
   }, [notes]);
 
   function createNewNote() {
@@ -38,13 +28,19 @@ export default function App() {
   }
 
   function updateNote(text) {
-    setNotes((oldNotes) =>
-      oldNotes.map((oldNote) => {
-        return oldNote.id === currentNoteId
-          ? { ...oldNote, body: text }
-          : oldNote;
-      })
-    );
+    // Put the most recently-modified note at the top
+    setNotes((oldNotes) => {
+      const newArray = [];
+      for (let i = 0; i < oldNotes.length; i++) {
+        const oldNote = oldNotes[i];
+        if (oldNote.id === currentNoteId) {
+          newArray.unshift({ ...oldNote, body: text });
+        } else {
+          newArray.push(oldNote);
+        }
+      }
+      return newArray;
+    });
   }
 
   function findCurrentNote() {
@@ -54,6 +50,11 @@ export default function App() {
       }) || notes[0]
     );
   }
+  const deleteNoteHandler = (event, id) => {
+    event.stopPropagation();
+    // console.log(id);
+    setNotes((oldNotes) => oldNotes.filter((item) => item.id != id));
+  };
 
   return (
     <main>
@@ -64,6 +65,7 @@ export default function App() {
             currentNote={findCurrentNote()}
             setCurrentNoteId={setCurrentNoteId}
             newNote={createNewNote}
+            deleteNoteHandler={deleteNoteHandler}
           />
           {currentNoteId && notes.length > 0 && (
             <Editor currentNote={findCurrentNote()} updateNote={updateNote} />
