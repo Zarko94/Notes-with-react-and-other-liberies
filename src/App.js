@@ -21,10 +21,11 @@ export default function App() {
     JSON.parse(window.localStorage.getItem("notes")) || []
   );
   const [currentNoteId, setCurrentNoteId] = React.useState(
-    (notes[0] && notes[0].id) || ""
+    () => (notes[0] && notes[0].id) || ""
   );
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
+    console.log(notes[0].body.split("\n"));
   }, [notes]);
 
   function createNewNote() {
