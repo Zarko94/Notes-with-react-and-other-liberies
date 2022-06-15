@@ -1,5 +1,13 @@
 live link >>> https://mellow-blancmange-b16bcc.netlify.app/
 
+liberies i have used :
+    "nanoid": "^4.0.0",
+    "react-mde": "^11.5.0",
+    "react-scripts": "5.0.1",
+    "showdown": "^1.9.1",
+    "react-split": "^2.0.13",
+  
+
 
 # Getting Started with Create React App
 
