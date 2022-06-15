@@ -8,7 +8,8 @@ liberies i have used :
     "react-split": "^2.0.13",
     
     
-    ![Capture](https://user-images.githubusercontent.com/93679996/173792091-dbe44415-0e74-4f53-8202-c0845924b6c8.JPG)
+![Capture](https://user-images.githubusercontent.com/93679996/173792335-0ea4db4b-77d2-48d5-be39-3f6c9798deff.JPG)
+
 
   
 
